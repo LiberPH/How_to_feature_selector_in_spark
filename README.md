@@ -1,7 +1,7 @@
-# Features selection in spark
+# **Features selection in spark**
 How to use the tools provided by feature selector in spark
 
-# **Feature selector**
+# *Feature selector*
 
 ## Vector slicer
 
@@ -31,4 +31,6 @@ output.select("userFeatures", "features").show()
 ```
 
 ## RFormula
+Allows us to build the features for a model using an R formula. This makes authomatic binary categories which may not be useful if you know your data (seems very useful to automatize processes and make libraries but not for our current work.
 
+## **ChiSqSelector**
