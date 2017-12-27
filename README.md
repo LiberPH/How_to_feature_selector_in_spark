@@ -34,8 +34,14 @@ output.select("userFeatures", "features").show()
 Allows us to build the features for a model using an R formula. This makes authomatic binary categories which may not be useful if you know your data (seems very useful to automatize processes and make libraries but not for our current work.
 
 ## **ChiSqSelector** (may be useful but I sill have a lot of questions about it)
- It operates on labeled data with categorical features (only categorical?).
- 
+Selects categorical features to use for predicting a categorical label.
+(https://spark.apache.org/docs/2.2.0/api/java/org/apache/spark/ml/feature/ChiSqSelector.html).
+
+**It seems to only work for categorica data!!! O.o Check this!** ¿Es sólo un problema de versiones anteriores?
+https://stackoverflow.com/questions/39076943/spark-ml-how-to-find-feature-importance/39081505
+
+There are previous attempts where it crashes when using the output in trees based models: https://q-a-assistant.com/computer-internet-technology/312712_spark-ml-issue-in-training-after-using-chisqselector-for-feature-selection.html 
+
 It supports five selection methods: numTopFeatures, percentile, fpr, fdr, fwe
 * **numTopFeatures:** chooses a fixed number of top features according to a chi-squared test. This is akin to yielding the features with the most predictive power. 
 * **percentile:** is similar to numTopFeatures but chooses a fraction of all features instead of a fixed number. 
@@ -62,3 +68,11 @@ result = selector.fit(df).transform(df)
 print("ChiSqSelector output with top %d features selected" % selector.getNumTopFeatures())
 result.show()
 ```
+
+Si sí hay problemas con datos no categoricos aplicar:
+
+
+# Other methods:
+https://stackoverflow.com/questions/39076943/spark-ml-how-to-find-feature-importance/39081505
+
+## **Information gain based feature selection**
