@@ -76,3 +76,47 @@ Si sí hay problemas con datos no categoricos aplicar:
 https://stackoverflow.com/questions/39076943/spark-ml-how-to-find-feature-importance/39081505
 
 ## **Information gain based feature selection**
+
+## **Correlation**
+https://spark.apache.org/docs/2.2.0/ml-statistics.html#correlation
+Correlation computes the correlation matrix for the input Dataset of Vectors using the specified method. The output will be a DataFrame that contains the correlation matrix of the column of vectors.
+
+Example from spark
+```python
+from pyspark.ml.linalg import Vectors
+from pyspark.ml.stat import Correlation
+
+data = [(Vectors.sparse(4, [(0, 1.0), (3, -2.0)]),),
+        (Vectors.dense([4.0, 5.0, 0.0, 3.0]),),
+        (Vectors.dense([6.0, 7.0, 0.0, 8.0]),),
+        (Vectors.sparse(4, [(0, 9.0), (3, 1.0)]),)]
+df = spark.createDataFrame(data, ["features"])
+
+r1 = Correlation.corr(df, "features").head()
+print("Pearson correlation matrix:\n" + str(r1[0]))
+
+r2 = Correlation.corr(df, "features", "spearman").head()
+print("Spearman correlation matrix:\n" + str(r2[0]))
+```
+
+## ChiSquareTest
+ChiSquareTest conducts Pearson’s independence test for every feature against the label. For each feature, the (feature, label) pairs are converted into a contingency matrix for which the Chi-squared statistic is computed. **All label and feature values must be categorical O.o**.
+
+**El ejemplo no es categorico, funciona en 2.2, de tiene que checar en 2.1**
+```python
+from pyspark.ml.linalg import Vectors
+from pyspark.ml.stat import ChiSquareTest
+
+data = [(0.0, Vectors.dense(0.5, 10.0)),
+        (0.0, Vectors.dense(1.5, 20.0)),
+        (1.0, Vectors.dense(1.5, 30.0)),
+        (0.0, Vectors.dense(3.5, 30.0)),
+        (0.0, Vectors.dense(3.5, 40.0)),
+        (1.0, Vectors.dense(3.5, 40.0))]
+df = spark.createDataFrame(data, ["label", "features"])
+
+r = ChiSquareTest.test(df, "features", "label").head()
+print("pValues: " + str(r.pValues))
+print("degreesOfFreedom: " + str(r.degreesOfFreedom))
+print("statistics: " + str(r.statistics))
+```
