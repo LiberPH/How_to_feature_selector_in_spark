@@ -7,8 +7,11 @@ How to use the tools provided by feature selector in spark
 
 An important thing to remember is that most models in the ml package from spark use a format based on two columns: one with a label and another with a vector of features (variables):
 
-<img src="input_for_models.png" alt="Drawing" style="width: 100px;"/>
-![input example](/input_for_models.png =250x)
+
+![input]
+
+[input]: input_for_models.png 
+{: height="36px" width="36px"}
 
 Vector slicer is a tool to choose the useful elements of the vector in the features column. It is useful If and only if you already know which are the useful features.
 
