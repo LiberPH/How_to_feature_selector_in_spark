@@ -33,4 +33,32 @@ output.select("userFeatures", "features").show()
 ## RFormula
 Allows us to build the features for a model using an R formula. This makes authomatic binary categories which may not be useful if you know your data (seems very useful to automatize processes and make libraries but not for our current work.
 
-## **ChiSqSelector**
+## **ChiSqSelector** (may be useful but I sill have a lot of questions about it)
+ It operates on labeled data with categorical features (only categorical?).
+ 
+It supports five selection methods: numTopFeatures, percentile, fpr, fdr, fwe
+* **numTopFeatures:** chooses a fixed number of top features according to a chi-squared test. This is akin to yielding the features with the most predictive power. 
+* **percentile:** is similar to numTopFeatures but chooses a fraction of all features instead of a fixed number. 
+* **fpr** chooses all features whose p-values are below a threshold, thus controlling the false positive rate of selection. 
+* **fdr** uses the Benjamini-Hochberg procedure to choose all features whose false discovery rate is below a threshold. 
+* **fwe** chooses all features whose p-values are below a threshold. The threshold is scaled by 1/numFeatures, thus controlling the family-wise error rate of selection. 
+
+By default, the selection method is numTopFeatures, with the default number of top features set to 50. The user can choose a selection method using setSelectorType.
+
+```python
+from pyspark.ml.feature import ChiSqSelector
+from pyspark.ml.linalg import Vectors
+
+df = spark.createDataFrame([
+    (7, Vectors.dense([0.0, 0.0, 18.0, 1.0]), 1.0,),
+    (8, Vectors.dense([0.0, 1.0, 12.0, 0.0]), 0.0,),
+    (9, Vectors.dense([1.0, 0.0, 15.0, 0.1]), 0.0,)], ["id", "features", "clicked"])
+
+selector = ChiSqSelector(numTopFeatures=1, featuresCol="features",
+                         outputCol="selectedFeatures", labelCol="clicked")
+
+result = selector.fit(df).transform(df)
+
+print("ChiSqSelector output with top %d features selected" % selector.getNumTopFeatures())
+result.show()
+```
