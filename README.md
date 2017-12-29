@@ -98,11 +98,12 @@ print("Pearson correlation matrix:\n" + str(r1[0]))
 r2 = Correlation.corr(df, "features", "spearman").head()
 print("Spearman correlation matrix:\n" + str(r2[0]))
 ```
+** Funciona en 2.2, se tiene que checar en 2.1**
 
 ## ChiSquareTest
 ChiSquareTest conducts Pearson’s independence test for every feature against the label. For each feature, the (feature, label) pairs are converted into a contingency matrix for which the Chi-squared statistic is computed. **All label and feature values must be categorical O.o**.
 
-**El ejemplo no es categorico, funciona en 2.2, de tiene que checar en 2.1**
+**El ejemplo no es categorico, funciona en 2.2, se tiene que checar en 2.1**
 ```python
 from pyspark.ml.linalg import Vectors
 from pyspark.ml.stat import ChiSquareTest
